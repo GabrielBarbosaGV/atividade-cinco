@@ -36,18 +36,21 @@ import br.ufpe.cin.if688.minijava.ast.Type;
 import br.ufpe.cin.if688.minijava.ast.VarDecl;
 import br.ufpe.cin.if688.minijava.ast.While;
 import br.ufpe.cin.if688.minijava.symboltable.SymbolTable;
+import br.ufpe.cin.if688.minijava.symboltable.Class;
+import br.ufpe.cin.if688.minijava.symboltable.Method;
+import br.ufpe.cin.if688.minijava.symboltable.Variable;
 import java.util.Enumeration;
 
 public class TypeCheckVisitor implements IVisitor<Type> {
 
 	private SymbolTable symbolTable;
-  private Class currClass;
-  private Method currMethod;
+	private Class currClass;
+	private Method currMethod;
 
-	TypeCheckVisitor(SymbolTable st) {
+	public TypeCheckVisitor(SymbolTable st) {
 		symbolTable = st;
-    currClass = null;
-    currMethod = null;
+		currClass = null;
+		currMethod = null;
 	}
 
 	// MainClass m;
@@ -73,7 +76,7 @@ public class TypeCheckVisitor implements IVisitor<Type> {
 	// VarDeclList vl;
 	// MethodDeclList ml;
 	public Type visit(ClassDeclSimple n) {
-    currClass = symbolTable.getClass(n.i.toString());
+		currClass = symbolTable.getClass(n.i.toString());
 
 		n.i.accept(this);
 		for (int i = 0; i < n.vl.size(); i++) {
@@ -90,7 +93,7 @@ public class TypeCheckVisitor implements IVisitor<Type> {
 	// VarDeclList vl;
 	// MethodDeclList ml;
 	public Type visit(ClassDeclExtends n) {
-    currClass = symbolTable.getClass(n.i.toString());
+		currClass = symbolTable.getClass(n.i.toString());
 
 		n.i.accept(this);
 		n.j.accept(this);
@@ -118,8 +121,8 @@ public class TypeCheckVisitor implements IVisitor<Type> {
 	// StatementList sl;
 	// Exp e;
 	public Type visit(MethodDecl n) {
-    currMethod =
-      symbolTable.getMethod(n.i.toString(), currClass.getId());
+		currMethod =
+			symbolTable.getMethod(n.i.toString(), currClass.getId());
 
 		n.t.accept(this);
 		n.i.accept(this);
@@ -172,9 +175,11 @@ public class TypeCheckVisitor implements IVisitor<Type> {
 	// Exp e;
 	// Statement s1,s2;
 	public Type visit(If n) {
-	  if (!(n.e.accept(this) instanceof BooleanType)) {
-      // TODO Correct Exit
-    }
+		if (!(n.e.accept(this) instanceof BooleanType)) {
+			// TODO Correct Exit
+			Thread.dumpStack();
+			System.exit(0);
+		}
 		n.s1.accept(this);
 		n.s2.accept(this);
 		return null;
@@ -184,8 +189,10 @@ public class TypeCheckVisitor implements IVisitor<Type> {
 	// Statement s;
 	public Type visit(While n) {
 		if (!(n.e.accept(this) instanceof BooleanType)) {
-      // TODO Correct Exit
-    }
+			// TODO Correct Exit
+			Thread.dumpStack();
+			System.exit(0);
+		}
 		n.s.accept(this);
 		return null;
 	}
@@ -199,16 +206,18 @@ public class TypeCheckVisitor implements IVisitor<Type> {
 	// Identifier i;
 	// Exp e;
 	public Type visit(Assign n) {
-    Type assigneeType =
-      symbolTable.getVarType(currMethod, currClass, n.i.toString());
+		Type assigneeType =
+			symbolTable.getVarType(currMethod, currClass, n.i.toString());
 
 		n.i.accept(this);
 
-    Type assignedType = n.e.accept(this);
+		Type assignedType = n.e.accept(this);
 
-    if (!(assigneeType.getClass() == assignedType.getClass())) {
-      // TODO Correct Exit
-    }
+		if (!(assigneeType.getClass() == assignedType.getClass())) {
+			// TODO Correct Exit
+			Thread.dumpStack();
+			System.exit(0);
+		}
 
 		return null;
 	}
@@ -216,30 +225,34 @@ public class TypeCheckVisitor implements IVisitor<Type> {
 	// Identifier i;
 	// Exp e1,e2;
 	public Type visit(ArrayAssign n) {
-    Type assigneeType =
-      symbolTable.getVarType(currMethod, currClass, n.i.toString());
-    
+		Type assigneeType =
+			symbolTable.getVarType(currMethod, currClass, n.i.toString());
+
 		n.i.accept(this);
 
 		Type assignedType = n.e1.accept(this);
 
 		Type assignedSize = n.e2.accept(this);
 
-    if (!((assignedSize instanceof IntegerType) && (assigneeType.getClass() == assignedType.getClass()))) {
-      // TODO Correct Exit
-    }
+		if (!((assignedSize instanceof IntegerType) && (assigneeType.getClass() == assignedType.getClass()))) {
+			// TODO Correct Exit
+			Thread.dumpStack();
+			System.exit(0);
+		}
 
 		return null;
 	}
 
 	// Exp e1,e2;
 	public Type visit(And n) {
-		Type boolONe = n.e1.accept(this);
+		Type boolOne = n.e1.accept(this);
 		Type boolTwo = n.e2.accept(this);
 
-    if (!((boolOne instanceof BooleanType) && (boolTwo instanceof BooleanType))) {
-      // TODO Correct Exit
-    }
+		if (!((boolOne instanceof BooleanType) && (boolTwo instanceof BooleanType))) {
+			// TODO Correct Exit
+			Thread.dumpStack();
+			System.exit(0);
+		}
 
 		return new BooleanType();
 	}
@@ -249,9 +262,11 @@ public class TypeCheckVisitor implements IVisitor<Type> {
 		Type integerOne = n.e1.accept(this);
 		Type integerTwo = n.e2.accept(this);
 
-    if (!((integerOne instanceof IntegerType) && (integerTwo instanceof IntegerType))) {
-      // TODO Correct Exit
-    }
+		if (!((integerOne instanceof IntegerType) && (integerTwo instanceof IntegerType))) {
+			// TODO Correct Exit
+			Thread.dumpStack();
+			System.exit(0);
+		}
 
 		return new BooleanType();
 	}
@@ -261,9 +276,11 @@ public class TypeCheckVisitor implements IVisitor<Type> {
 		Type integerOne = n.e1.accept(this);
 		Type integerTwo = n.e2.accept(this);
 
-    if (!((integerOne instanceof IntegerType) && (integerTwo instanceof IntegerType))) {
-      // TODO Correct Exit
-    }
+		if (!((integerOne instanceof IntegerType) && (integerTwo instanceof IntegerType))) {
+			// TODO Correct Exit
+			Thread.dumpStack();
+			System.exit(0);
+		}
 
 		return new IntegerType();
 	}
@@ -273,9 +290,11 @@ public class TypeCheckVisitor implements IVisitor<Type> {
 		Type integerOne = n.e1.accept(this);
 		Type integerTwo = n.e2.accept(this);
 
-    if (!((integerOne instanceof IntegerType) && (integerTwo instanceof IntegerType))) {
-      // TODO Correct Exit
-    }
+		if (!((integerOne instanceof IntegerType) && (integerTwo instanceof IntegerType))) {
+			// TODO Correct Exit
+			Thread.dumpStack();
+			System.exit(0);
+		}
 
 		return new IntegerType();
 	}
@@ -285,9 +304,11 @@ public class TypeCheckVisitor implements IVisitor<Type> {
 		Type integerOne = n.e1.accept(this);
 		Type integerTwo = n.e2.accept(this);
 
-    if(!((integerOne instanceof IntegerType) && (integerTwo instanceof IntegerType))) {
-      // TODO Correct Exit
-    }
+		if(!((integerOne instanceof IntegerType) && (integerTwo instanceof IntegerType))) {
+			// TODO Correct Exit
+			Thread.dumpStack();
+			System.exit(0);
+		}
 
 		return new IntegerType();
 	}
@@ -305,9 +326,11 @@ public class TypeCheckVisitor implements IVisitor<Type> {
 	public Type visit(ArrayLength n) {
 		Type integerType = n.e.accept(this);
 
-    if (!(integerType instanceof IntegerType)) {
-      // TODO Correct Exit
-    }
+		if (!(integerType instanceof IntegerType)) {
+			// TODO Correct Exit
+			Thread.dumpStack();
+			System.exit(0);
+		}
 
 		return new IntegerType();
 	}
@@ -319,42 +342,52 @@ public class TypeCheckVisitor implements IVisitor<Type> {
 		Type classIdentifier = n.e.accept(this);
 		Type methodIdentifier = n.i.accept(this);
 
-    // Check if expression resolves to class
-    if (!((classIdentifier instanceof IdentifierType))) {
-      // TODO Correct Exit
-    }
+		// Check if expression resolves to class
+		if (!((classIdentifier instanceof IdentifierType))) {
+			// TODO Correct Exit
+			Thread.dumpStack();
+			System.exit(0);
+		}
 
-    String className = ((IdentifierType) classIdentifier).s;
+		String className = ((IdentifierType) classIdentifier).s;
 
-    // Check if class exists
-    if (!(symbolTable.containsClass(className))) {
-      // TODO Correct Exit
-    }
+		// Check if class exists
+		if (!(symbolTable.containsClass(className))) {
+			// TODO Correct Exit
+			Thread.dumpStack();
+			System.exit(0);
+		}
 
-    Class methodClass = symbolTable.getClass(className);
+		Class methodClass = symbolTable.getClass(className);
 
-    String methodName = ((IdentifierType) methodIdentifier).s;
+		String methodName = ((IdentifierType) methodIdentifier).s;
 
-    // Check if method is contained by resolved class
-    if (!(methodClass.containsMethod(methodName))) {
-      // TODO Correct Exit
-    }
+		// Check if method is contained by resolved class
+		if (!(methodClass.containsMethod(methodName))) {
+			// TODO Correct Exit
+			Thread.dumpStack();
+			System.exit(0);
+		}
 
-    Method method = methodClass.getMethod(methodName);
+		Method method = methodClass.getMethod(methodName);
 
-    Enumeration params = method.getParams();
+		Enumeration<Variable> params = method.getParams();
 
 		for (int i = 0; i < n.el.size(); i++) {
-      if (!(params.hasMoreElements())) {
-        // TODO Correct Exit
-      }
+			if (!(params.hasMoreElements())) {
+				// TODO Correct Exit
+				Thread.dumpStack();
+				System.exit(0);
+			}
 
 			Type passedParamType = n.el.elementAt(i).accept(this);
-      Type actualParamType = params.nextElement();
+			Type actualParamType = params.nextElement().type();
 
-      if (!((passedParamType.getClass()) == (actualParamType.getClass()))) {
-        // TODO Correct Exit
-      }
+			if (!((passedParamType.getClass()) == (actualParamType.getClass()))) {
+				// TODO Correct Exit
+				Thread.dumpStack();
+				System.exit(0);
+			}
 		}
 
 		return method.type();
@@ -375,68 +408,82 @@ public class TypeCheckVisitor implements IVisitor<Type> {
 
 	// String s;
 	public Type visit(IdentifierExp n) {
-    String name = n.s;
+		String name = n.s;
 
-    Type foundType = null;
+		Type foundType = null;
 
-    if (currClass.containsVar(name)) {
-      foundType = currClass.getVar(name).type();
-    } else if (currMethod.containsVar(name)) {
-      foundType = currMethod.getVar(name).type();
-    } else {
-      // TODO Correct Exit
-    }
+		if (currClass.containsVar(name)) {
+			foundType = currClass.getVar(name).type();
+		} else if (currMethod.containsVar(name)) {
+			foundType = currMethod.getVar(name).type();
+		} else {
+			// TODO Correct Exit
+			Thread.dumpStack();
+			System.exit(0);
+		}
 
 		return foundType;
 	}
 
 	public Type visit(This n) {
-		return IdentifierType(currClass.getId());
+		return new IdentifierType(currClass.getId());
 	}
 
 	// Exp e;
 	public Type visit(NewArray n) {
 		Type integerType = n.e.accept(this);
 
-    if (!(integerType instanceof IntegerType)) {
-      // TODO Correct Exit
-    }
+		if (!(integerType instanceof IntegerType)) {
+			// TODO Correct Exit
+			Thread.dumpStack();
+			System.exit(0);
+		}
 
 		return new IntArrayType();
 	}
 
 	// Identifier i;
 	public Type visit(NewObject n) {
-    if (!(symbolTable.containsClass(n.id))) { 
-      // TODO Correct Exit
-    }
+		if (!(symbolTable.containsClass(n.toString()))) { 
+			// TODO Correct Exit
+			Thread.dumpStack();
+			System.exit(0);
+		}
 
-		return symbolTable.getClass(n.id).type();
+		return symbolTable.getClass(n.toString()).type();
 	}
 
 	// Exp e;
 	public Type visit(Not n) {
 		Type booleanType = n.e.accept(this);
 
-    if (!(booleanType instanceof BooleanType) {
-      // TODO Correct Exit
-    }
+		if (!(booleanType instanceof BooleanType)) {
+			// TODO Correct Exit
+			Thread.dumpStack();
+			System.exit(0);
+		}
 
 		return new BooleanType();
 	}
 
 	// String s;
 	public Type visit(Identifier n) {
-    Type foundType = null;
+		Type foundType = null;
 
-    if (currClass.containsVar(n.s)) {
-      foundType = currClass.getVar(n.s).type();
-    } else if (currMethod.containsVar(n.s)) {
-      foundType = currMethod.getVar(n.s).type();
-    } else {
-      // TODO Correct Exit
-    }
-
+		if (currClass == null) {
+			return new IdentifierType(n.s);
+		} else if (currClass.containsVar(n.s)) {
+			foundType = currClass.getVar(n.s).type();
+		} else if (currMethod == null) {
+			return new IdentifierType(n.s);
+		} else if (currMethod.containsVar(n.s)) {
+			foundType = currMethod.getVar(n.s).type();
+		} else {
+			// TODO Correct Exit
+			Thread.dumpStack();
+			System.exit(0);
+		}
 		return foundType;
 	}
+
 }

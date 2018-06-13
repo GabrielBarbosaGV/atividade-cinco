@@ -43,9 +43,9 @@ public class BuildSymbolTableVisitor implements IVisitor<Void> {
 	SymbolTable symbolTable;
 
 	public BuildSymbolTableVisitor() {
-	symbolTable = new SymbolTable();
-    currClass = null;
-    currMethod = null;
+		symbolTable = new SymbolTable();
+		currClass = null;
+		currMethod = null;
 	}
 
 	public SymbolTable getSymbolTable() {
@@ -78,11 +78,11 @@ public class BuildSymbolTableVisitor implements IVisitor<Void> {
 	// VarDeclList vl;
 	// MethodDeclList ml;
 	public Void visit(ClassDeclSimple n) {
-    Class lastClass = currClass;
+		Class lastClass = currClass;
 
-    // Entrando no escopo da classe
-    symbolTable.addClass(n.i.toString(), null);
-    currClass = symbolTable.getClass(n.i.toString());
+		// Entrando no escopo da classe
+		symbolTable.addClass(n.i.toString(), null);
+		currClass = symbolTable.getClass(n.i.toString());
 
 		n.i.accept(this);
 		for (int i = 0; i < n.vl.size(); i++) {
@@ -92,8 +92,8 @@ public class BuildSymbolTableVisitor implements IVisitor<Void> {
 			n.ml.elementAt(i).accept(this);
 		}
 
-    currClass = lastClass;
-    // Saindo do escopo do classe
+		currClass = lastClass;
+		// Saindo do escopo do classe
 
 		return null;
 	}
@@ -103,11 +103,11 @@ public class BuildSymbolTableVisitor implements IVisitor<Void> {
 	// VarDeclList vl;
 	// MethodDeclList ml;
 	public Void visit(ClassDeclExtends n) {
-    Class lastClass = currClass;
+		Class lastClass = currClass;
 
-    // Entrando no escopo da classe
-    symbolTable.addClass(n.i.toString(), n.j.toString());
-    currClass = symbolTable.getClass(n.i.toString());
+		// Entrando no escopo da classe
+		symbolTable.addClass(n.i.toString(), n.j.toString());
+		currClass = symbolTable.getClass(n.i.toString());
 
 		n.i.accept(this);
 		n.j.accept(this);
@@ -118,8 +118,8 @@ public class BuildSymbolTableVisitor implements IVisitor<Void> {
 			n.ml.elementAt(i).accept(this);
 		}
 
-    // Saindo do escopo da classe
-    currClass = lastClass;
+		// Saindo do escopo da classe
+		currClass = lastClass;
 
 		return null;
 	}
@@ -127,9 +127,9 @@ public class BuildSymbolTableVisitor implements IVisitor<Void> {
 	// Type t;
 	// Identifier i;
 	public Void visit(VarDecl n) {
-    if (currMethod != null)
-      currMethod.addVar(n.i.toString(), n.t);
-    else currClass.addVar(n.i.toString(), n.t);
+		if (currMethod != null)
+			currMethod.addVar(n.i.toString(), n.t);
+		else currClass.addVar(n.i.toString(), n.t);
 
 		n.t.accept(this);
 		n.i.accept(this);
@@ -143,8 +143,8 @@ public class BuildSymbolTableVisitor implements IVisitor<Void> {
 	// StatementList sl;
 	// Exp e;
 	public Void visit(MethodDecl n) {
-    currClass.addMethod(n.i.toString(), n.t);
-    currMethod = currClass.getMethod(n.i.toString());
+		currClass.addMethod(n.i.toString(), n.t);
+		currMethod = currClass.getMethod(n.i.toString());
 
 		n.t.accept(this);
 		n.i.accept(this);
@@ -165,7 +165,7 @@ public class BuildSymbolTableVisitor implements IVisitor<Void> {
 	// Identifier i;
 	public Void visit(Formal n) {
 		currMethod.addParam(n.i.toString(), n.t);
-		
+
 		n.t.accept(this);
 		n.i.accept(this);
 		return null;
