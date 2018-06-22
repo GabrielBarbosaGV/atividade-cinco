@@ -176,7 +176,6 @@ public class TypeCheckVisitor implements IVisitor<Type> {
 	// Statement s1,s2;
 	public Type visit(If n) {
 		if (!(n.e.accept(this) instanceof BooleanType)) {
-			// TODO Correct Exit
 			Thread.dumpStack();
 			System.exit(0);
 		}
@@ -189,7 +188,6 @@ public class TypeCheckVisitor implements IVisitor<Type> {
 	// Statement s;
 	public Type visit(While n) {
 		if (!(n.e.accept(this) instanceof BooleanType)) {
-			// TODO Correct Exit
 			Thread.dumpStack();
 			System.exit(0);
 		}
@@ -214,7 +212,6 @@ public class TypeCheckVisitor implements IVisitor<Type> {
 		Type assignedType = n.e.accept(this);
 
 		if (!(assigneeType.getClass() == assignedType.getClass())) {
-			// TODO Correct Exit
 			Thread.dumpStack();
 			System.exit(0);
 		}
@@ -235,7 +232,6 @@ public class TypeCheckVisitor implements IVisitor<Type> {
 		Type assignedSize = n.e2.accept(this);
 
 		if (!((assignedSize instanceof IntegerType) && (assigneeType.getClass() == assignedType.getClass()))) {
-			// TODO Correct Exit
 			Thread.dumpStack();
 			System.exit(0);
 		}
@@ -249,7 +245,6 @@ public class TypeCheckVisitor implements IVisitor<Type> {
 		Type boolTwo = n.e2.accept(this);
 
 		if (!((boolOne instanceof BooleanType) && (boolTwo instanceof BooleanType))) {
-			// TODO Correct Exit
 			Thread.dumpStack();
 			System.exit(0);
 		}
@@ -263,7 +258,6 @@ public class TypeCheckVisitor implements IVisitor<Type> {
 		Type integerTwo = n.e2.accept(this);
 
 		if (!((integerOne instanceof IntegerType) && (integerTwo instanceof IntegerType))) {
-			// TODO Correct Exit
 			Thread.dumpStack();
 			System.exit(0);
 		}
@@ -277,7 +271,6 @@ public class TypeCheckVisitor implements IVisitor<Type> {
 		Type integerTwo = n.e2.accept(this);
 
 		if (!((integerOne instanceof IntegerType) && (integerTwo instanceof IntegerType))) {
-			// TODO Correct Exit
 			Thread.dumpStack();
 			System.exit(0);
 		}
@@ -291,7 +284,6 @@ public class TypeCheckVisitor implements IVisitor<Type> {
 		Type integerTwo = n.e2.accept(this);
 
 		if (!((integerOne instanceof IntegerType) && (integerTwo instanceof IntegerType))) {
-			// TODO Correct Exit
 			Thread.dumpStack();
 			System.exit(0);
 		}
@@ -305,7 +297,6 @@ public class TypeCheckVisitor implements IVisitor<Type> {
 		Type integerTwo = n.e2.accept(this);
 
 		if(!((integerOne instanceof IntegerType) && (integerTwo instanceof IntegerType))) {
-			// TODO Correct Exit
 			Thread.dumpStack();
 			System.exit(0);
 		}
@@ -327,7 +318,6 @@ public class TypeCheckVisitor implements IVisitor<Type> {
 		Type integerType = n.e.accept(this);
 
 		if (!(integerType instanceof IntegerType)) {
-			// TODO Correct Exit
 			Thread.dumpStack();
 			System.exit(0);
 		}
@@ -344,7 +334,6 @@ public class TypeCheckVisitor implements IVisitor<Type> {
 
 		// Check if expression resolves to class
 		if (!((classIdentifier instanceof IdentifierType))) {
-			// TODO Correct Exit
 			Thread.dumpStack();
 			System.exit(0);
 		}
@@ -353,7 +342,6 @@ public class TypeCheckVisitor implements IVisitor<Type> {
 
 		// Check if class exists
 		if (!(symbolTable.containsClass(className))) {
-			// TODO Correct Exit
 			Thread.dumpStack();
 			System.exit(0);
 		}
@@ -364,7 +352,6 @@ public class TypeCheckVisitor implements IVisitor<Type> {
 
 		// Check if method is contained by resolved class
 		if (!(methodClass.containsMethod(methodName))) {
-			// TODO Correct Exit
 			Thread.dumpStack();
 			System.exit(0);
 		}
@@ -375,7 +362,6 @@ public class TypeCheckVisitor implements IVisitor<Type> {
 
 		for (int i = 0; i < n.el.size(); i++) {
 			if (!(params.hasMoreElements())) {
-				// TODO Correct Exit
 				Thread.dumpStack();
 				System.exit(0);
 			}
@@ -384,7 +370,6 @@ public class TypeCheckVisitor implements IVisitor<Type> {
 			Type actualParamType = params.nextElement().type();
 
 			if (!((passedParamType.getClass()) == (actualParamType.getClass()))) {
-				// TODO Correct Exit
 				Thread.dumpStack();
 				System.exit(0);
 			}
@@ -417,7 +402,6 @@ public class TypeCheckVisitor implements IVisitor<Type> {
 		} else if (currMethod.containsVar(name)) {
 			foundType = currMethod.getVar(name).type();
 		} else {
-			// TODO Correct Exit
 			Thread.dumpStack();
 			System.exit(0);
 		}
@@ -434,7 +418,6 @@ public class TypeCheckVisitor implements IVisitor<Type> {
 		Type integerType = n.e.accept(this);
 
 		if (!(integerType instanceof IntegerType)) {
-			// TODO Correct Exit
 			Thread.dumpStack();
 			System.exit(0);
 		}
@@ -445,7 +428,6 @@ public class TypeCheckVisitor implements IVisitor<Type> {
 	// Identifier i;
 	public Type visit(NewObject n) {
 		if (!(symbolTable.containsClass(n.toString()))) { 
-			// TODO Correct Exit
 			Thread.dumpStack();
 			System.exit(0);
 		}
@@ -458,7 +440,6 @@ public class TypeCheckVisitor implements IVisitor<Type> {
 		Type booleanType = n.e.accept(this);
 
 		if (!(booleanType instanceof BooleanType)) {
-			// TODO Correct Exit
 			Thread.dumpStack();
 			System.exit(0);
 		}
@@ -479,7 +460,6 @@ public class TypeCheckVisitor implements IVisitor<Type> {
 		} else if (currMethod.containsVar(n.s)) {
 			foundType = currMethod.getVar(n.s).type();
 		} else {
-			// TODO Correct Exit
 			Thread.dumpStack();
 			System.exit(0);
 		}
